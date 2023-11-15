@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         [CRACKED] Ev.IO Aimbot & ESP
+// @name         [CRACKED] Ev.IO Cheats
 // @namespace    http://tampermonkey.net/
-// @version      0.8
+// @version      0.9
 // @description  Cracked free cheats for Ev.IO (CRACKED BY N0NEXIST)
 // @author       www.github.com/n0nexist
 // @match        *://ev.io/*
@@ -13,7 +13,7 @@
 
 let espEnabled = true;
 let aimbotEnabled = false;
-let espSize = 1;
+let espSize = 2;
 let worldScene;
 const precision = Math.pow( 10, 4 );
 const geometry = new THREE.EdgesGeometry( new THREE.BoxGeometry( 1, 2, 1 ).translate( 0, 1, 0 ) );
@@ -40,7 +40,7 @@ const material = new THREE.RawShaderMaterial( {
 
     	void main() {
 
-    		gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+    		gl_FragColor = vec4( 0.5, 0.5, 1.0, 1.0 );
 
     	}
 
@@ -139,10 +139,14 @@ function animate() {
 
             if ( player.myBox.visible ) {
                 const d = player.position.distanceTo( myCamera.position );
-                if ( d < minDistance ) {
+
+                const isMySelf = player.position.x == 0 && player.position.z == 0;
+
+                if ( d < minDistance && d > 1 && !isMySelf ) {
                     targetPlayer = player;
                     minDistance = d;
                 }
+
             }
 
             player.myBox.visible &&= espEnabled;
@@ -154,12 +158,12 @@ function animate() {
             const pitch = myCamera.rotation.x;
 
             myCamera.rotation.order = 'YXZ';
-            myCamera.lookAt( targetPlayer.position.x, targetPlayer.position.y + 1.5, targetPlayer.position.z );
+            myCamera.lookAt( targetPlayer.position.x, targetPlayer.position.y + 1.5 , targetPlayer.position.z );
 
             canvas.dispatchEvent( new MouseEvent( 'mousemove', {
                 movementX: ( yaw - myCamera.rotation.y ) * 500,
                 movementY: ( pitch - myCamera.rotation.x ) * 500
-            } ) );
+            }));
 
         }
 
